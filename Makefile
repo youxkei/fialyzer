@@ -12,16 +12,16 @@ $(MINIMAL_PLT):
 	dialyzer --build_plt --output_plt $(MINIMAL_PLT) \
 	  --apps stdlib
 
-test: unit-test beam $(MINIMAL_PLT) blackbox-test
+test: unit-test blackbox-test
 
 unit-test:
 	dune runtest test/unit-test
 
-blackbox-test:
+blackbox-test: beam $(MINIMAL_PLT)
 	dune runtest test/blackbox-test
 
-comparison:
-	dune build test/blackbox-test/run_time_comparison.sh
+comparison: beam $(MINIMAL_PLT)
+	dune build test/blackbox-test/run_time_comparison.svg
 
 promote:
 	dune promote
